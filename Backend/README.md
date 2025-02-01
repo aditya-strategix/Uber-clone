@@ -66,7 +66,7 @@ The request body should be a JSON object containing the following fields:
           "email": "johndoe@example.com"
       }
   }
-
+##
 
   ### GET /users/profile
 - **Description**: Retrieves the profile of the authenticated user.
