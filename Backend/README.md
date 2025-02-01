@@ -66,4 +66,19 @@ The request body should be a JSON object containing the following fields:
           "email": "johndoe@example.com"
       }
   }
-  ```
+
+
+  ### GET /users/profile
+- **Description**: Retrieves the profile of the authenticated user.
+- **Headers**:
+    - `Authorization` (string, required): Bearer token for authentication.
+- **Responses**:
+    - `200 OK`: Returns the user's profile data.
+
+
+### GET /users/logout
+- **Description**: Logs out the authenticated user by clearing the authentication token.
+- **Headers**:
+    - `Authorization` (string, required): Bearer token for authentication.
+- **Responses**:
+    - `200 OK`: Returns a message indicating successful logout.
