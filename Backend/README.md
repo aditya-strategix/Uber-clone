@@ -26,61 +26,44 @@ The request body should be a JSON object containing the following fields:
     "password": "password123"
 }
 ```
-
-## Responses
-
-### Success
-- **Status Code**: `201 Created`
-- **Response Body**:
-    ```json
-    {
-        "token": "jwt-auth-token",
-        "user": {
-            "_id": "user-id",
-            "fullname": {
-                "firstName": "John",
-                "lastName": "Doe"
-            },
-            "email": "john.doe@example.com"
-        }
-    }
-    ```
-
-### Validation Errors
-- **Status Code**: `400 Bad Request`
-- **Response Body**:
-    ```json
-    {
-        "errors": [
-            {
-                "msg": "Invalid Email",
-                "param": "email",
-                "location": "body"
-            },
-            {
-                "msg": "First name should be atleast 3 characters",
-                "param": "fullname.firstName",
-                "location": "body"
-            },
-            {
-                "msg": "Password must be atleast 6 characters long",
-                "param": "password",
-                "location": "body"
-            }
-        ]
-    }
-    ```
-
-### Server Errors
-- **Status Code**: `500 Internal Server Error`
-- **Response Body**:
-    ```json
-    {
-        "error": "Internal Server Error"
-    }
-    ```
-
 ## Notes
 - Ensure that the `email` provided is unique and not already registered in the system.
 - The `password` is securely hashed before being stored in the database.
 - The endpoint returns a JWT token that can be used for authenticated requests.
+
+
+## User Login Endpoint Documentation
+
+### Endpoint
+`POST /users/login`
+
+### Description
+This endpoint is used to authenticate a user. It validates the input credentials and returns an authentication token and user information upon successful login.
+
+### Request Body
+The request body should be a JSON object containing the following fields:
+
+- `email` (string, required): The user's email address. Must be a valid email format.
+- `password` (string, required): The user's password.
+
+### Example
+```json
+{
+    "email": "john.doe@example.com",
+    "password": "password123"
+}
+```
+
+### Success Response
+- **Code**: 200 OK
+- **Content**:
+  ```json
+  {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+      "user": {
+          "id": "12345",
+          "name": "John Doe",
+          "email": "johndoe@example.com"
+      }
+  }
+  ```
