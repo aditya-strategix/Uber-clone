@@ -66,4 +66,36 @@
     - `message` (string): Success or error message.
     - `data` (object): Registered captain details.
 
-  
+### Login Captain
+- **Endpoint:** `captains/login`
+- **Method:** POST
+- **Description:** Logs in an existing captain.
+- **Request Body:**
+    - `email` (string, required): Captain's email.
+    - `password` (string, required): Captain's password.
+- **Response:**
+
+    - `status` (string): Status of the request.
+    - `message` (string): Success or error message.
+    - `token` (string): Authentication token.
+
+### Get Captain Profile
+- **Endpoint:** `captains/profile`
+- **Method:** GET
+- **Description:** Retrieves the profile of the logged-in captain.
+- **Headers:**
+    - `Authorization` (string, required): Bearer token.
+- **Response:**
+    - `status` (string): Status of the request.
+    - `data` (object): Captain profile details.
+
+### Logout Captain
+- **Endpoint:** `captains/logout`
+- **Method:** GET
+- **Description:** Logs out the current captain.
+- **Headers:**
+    - `Authorization` (string, required): Bearer token.
+- **Response:**
+    - `status` (string): Status of the request.
+    - `message` (string): Success or error message.
+    

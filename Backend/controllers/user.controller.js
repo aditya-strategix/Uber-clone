@@ -16,6 +16,7 @@ if(isUserAlreadyExist){
     return res.status(400).json({message:'User already exist'});
 }
 const hashedPassword=await userModel.hashPassword(password);
+//statics and methods concept in model. statics are used for model level methods and methods are used for instance level methods
 
 const user=await userService.createUser({
     firstName:fullname.firstName,lastName:fullname.lastName,email,password:hashedPassword
