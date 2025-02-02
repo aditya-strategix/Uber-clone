@@ -1,37 +1,5 @@
 # User Registration Endpoint Documentation
 
-## Endpoint
-`POST /users/register`
-
-## Description
-This endpoint is used to register a new user. It validates the input data, hashes the password, and creates a new user in the database. Upon successful registration, it returns an authentication token and the user details.
-
-## Request Body
-The request body should be a JSON object containing the following fields:
-
-- `fullname`: An object containing the user's first and last name.
-    - `firstName` (string, required): The user's first name. Must be at least 3 characters long.
-    - `lastName` (string, optional): The user's last name. Must be at least 3 characters long if provided.
-- `email` (string, required): The user's email address. Must be a valid email format.
-- `password` (string, required): The user's password. Must be at least 6 characters long.
-
-### Example
-```json
-{
-    "fullname": {
-        "firstName": "John",
-        "lastName": "Doe"
-    },
-    "email": "john.doe@example.com",
-    "password": "password123"
-}
-```
-## Notes
-- Ensure that the `email` provided is unique and not already registered in the system.
-- The `password` is securely hashed before being stored in the database.
-- The endpoint returns a JWT token that can be used for authenticated requests.
-
-
 ## User Login Endpoint Documentation
 
 ### Endpoint
@@ -82,3 +50,40 @@ The request body should be a JSON object containing the following fields:
     - `Authorization` (string, required): Bearer token for authentication.
 - **Responses**:
     - `200 OK`: Returns a message indicating successful logout.
+
+    /**
+     * @fileoverview Captain routes for handling registration and other captain-related operations.
+     */
+
+    const express = require("express");
+    const router = express.Router();
+    const { body } = require("express-validator");
+    const captainController = require("../controllers/captain.controller");
+
+    /**
+     * @route POST /register
+     * @description Register a new captain
+     * @access Public
+     * @param {string} email - The email of the captain, must be a valid email format.
+     * @param {object} fullname - The full name of the captain.
+     * @param {string} fullname.firstName - The first name of the captain, must be at least 3 characters long.
+     * @param {string} password - The password for the captain's account, must be at least 6 characters long.
+     * @param {object} vehicle - The vehicle details of the captain.
+     * @param {string} vehicle.color - The color of the vehicle, must be at least 3 characters long.
+     * @param {string} vehicle.plate - The plate number of the vehicle, must be at least 3 characters long.
+     * @param {number} vehicle.capacity - The capacity of the vehicle, must be at least 1.
+     * @param {string} vehicle.vehicleType - The type of the vehicle, must be one of ['car', 'motorcycle', 'auto'].
+     * @returns {object} 201 - Created captain with authentication token.
+     * @returns {object} 400 - Validation errors or if captain already exists.
+     */
+    router.post('/register', [
+        body('email').isEmail().withMessage('Invalid Email'),
+        body('fullname.firstName').isLength({ min: 3 }).withMessage('First name should be at least 3 characters'),
+        body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+        body('vehicle.color').isLength({ min: 3 }).withMessage('Color must be at least 3 characters long'),
+        body('vehicle.plate').isLength({ min: 3 }).withMessage('Plate must be at least 3 characters long'),
+        body('vehicle.capacity').isInt({ min: 1 }).withMessage("Capacity must be at least 1"),
+        body('vehicle.vehicleType').isIn(['car', 'motorcycle', 'auto']).withMessage("Invalid vehicleType")
+    ], captainController.registerCaptain);
+
+    module.exports = router;
