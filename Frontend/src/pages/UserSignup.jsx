@@ -1,27 +1,45 @@
-import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-
+import { Link,useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { useContext } from 'react'
+import {UserDataContext} from '../context/UserContext'
+import axios from 'axios'
 const UserSignup = () => {
     const[firstName,setFirstName] =useState('');
     const[lastName,setLastName] =useState('');
     const[email, setEmail] =useState('');
     const[password, setPassword] =useState('');
-    const[userData, setUserData] =useState({email:'', password:''});
-    const submitHandler=(e)=>{
+    // const[userData, setUserData] =useState({email:'', password:''});
+    const navigate=useNavigate();
+    const { setUser}=useContext(UserDataContext);
+    const submitHandler=async(e)=>{
         e.preventDefault();
-        setUserData({fullName:{
-            firstName:firstName,
-            lastName:lastName
-        }, email:email,password:password});
-        console.log(email, password);
+       const newUser={fullname:{
+              firstName:firstName,
+              lastName:lastName
+         }, email:email, password:password};
+        console.log(newUser)
+    try {
+        const response=await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`,newUser);
+        console.log(response)
+       if(response.status===201){
+         const data=response.data;
+         console.log(data);
+         setUser(data.user);
+         localStorage.setItem('token',data.token);
+           navigate('/home');
         setEmail('');   
         setPassword('');
         setFirstName('');
         setLastName('');
+    }else{
+        console.log('FAILED TO REGISTER DATA')
     }
-    useEffect(()=>{
-        console.log(userData);
-    },[userData])
+    } catch (error) {
+        alert('Failed to register user');
+        console.log(error)
+    }
+       
+}
     return (
         <div className='p-4 flex flex-col justify-between h-screen'>
             <div>
@@ -44,7 +62,7 @@ const UserSignup = () => {
                 <input  value={password} onChange={(e)=>setPassword(e.target.value)}
                 className='w-full p-2 mb-4 border bg-[#eeeeee]  border-gray-400 rounded-lg'
                 required type="password" placeholder="Your Password"/>
-                <button className='flex items-center justify-center font-semibold text-white bg-[#111] mb-3 rounded px-4 py-2 border w-full'>Sign Up</button>
+                <button className='flex items-center justify-center font-semibold text-white bg-[#111] mb-3 rounded px-4 py-2 border w-full'>Create an account</button>
              <p className='text-center'> Already have an account?  <Link className='text-blue-600'to='/login'>Login here</Link></p>
             </form>
 

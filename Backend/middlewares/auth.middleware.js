@@ -14,6 +14,9 @@ if(isBlacklisted){
 }
     try {
         const decoded=jwt.verify(token,process.env.JWT_SECRET);
+        if(decoded.role!=='user'){
+            return res.status(401).json({message:'Unauthorized'});
+        }
         const user=await userModel.findById(decoded._id);
         req.user=user;
         return next();
@@ -36,7 +39,9 @@ module.exports.authCaptain=async(req,res,next)=>{
     }
     try {
         const decoded=jwt.verify(token,process.env.JWT_SECRET);
-        console.log(decoded);
+       if(decoded.role!=='captain'){
+            return res.status(401).json({message:'Unauthorized'});
+        }
         const captain=await captainModel.findById(decoded._id);
         console.log(captain);
         req.captain=captain;

@@ -1,20 +1,38 @@
 // import React from 'react'
 import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useContext } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { UserDataContext } from '../context/UserContext';
 const UserLogin = () => {
     const[email, setEmail] =useState('');
     const[password, setPassword] =useState('');
-    const[userData, setUserData] =useState({email:'', password:''});
-    const submitHandler=(e)=>{
+    // const[userData, setUserData] =useState({email:'', password:''});
+    const{setUser}=useContext(UserDataContext);  
+    const navigate=useNavigate(); 
+    const submitHandler=async(e)=>{
         e.preventDefault();
-        setUserData({email:email,password:password});
-        console.log(email, password);
-        setEmail('');   
-        setPassword('');
+        const newUser={email:email,password:password};
+       const response=await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`,newUser);
+       console.log(response)
+       try {
+        if(response.status===200){
+            const data=response.data;
+            setUser(data.user);
+            localStorage.setItem('token',data.token);
+            navigate('/home');
+      setEmail('');   
+      setPassword('');
+  }else{
+        console.log('FAILED TO LOGIN')
     }
-    useEffect(()=>{
-        console.log(userData);
-    },[userData])
+       } catch (error) {
+           console.log(error)   
+        
+       }
+     
+}
     return (
         <div className='p-7 flex flex-col justify-between h-screen'>
             <div>
