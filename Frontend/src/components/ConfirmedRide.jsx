@@ -1,5 +1,9 @@
-const ConfirmedRide = ({ setVehicleFound,setConfirmRidePanel }) => {
-    return (
+
+const ConfirmedRide = ({ setVehicleFound,setConfirmRidePanel,createRide,pickup,destination,fare,vehicleType}) => {
+    console.log("Fare Object:", fare);
+    console.log("Vehicle Type:", vehicleType);
+    console.log(fare?.fare?.[vehicleType]);
+        return (
         <div>
             <h5 className="p-1 text-center w-[93%] absolute top-0" onClick={() => setConfirmRidePanel(false)}>
                 <i className="text-3xl text-gray-200 ri-arrow-down-wide-line"></i>
@@ -12,21 +16,26 @@ const ConfirmedRide = ({ setVehicleFound,setConfirmRidePanel }) => {
                         <i className="text-lg ri-map-pin-fill"></i>
                         <div className="flex flex-col">
                             <h3 className="text-lg font-medium">562/11-A</h3>
-                            <p className="text-sm -mt-1 text-gray-600">Kankariya Talab, Ahemdabad</p>
+                            <p className="text-sm -mt-1 text-gray-600">{pickup}</p>
                         </div>
                     </div>
                     <div className="flex items-center border-b-2 gap-5 p-3"> <i className="text-lg ri-map-pin-add-fill"></i>
                         <div className="flex flex-col">
                             <h3 className="text-lg font-medium">562/11-A</h3>
-                            <p className="text-sm -mt-1 text-gray-600">Kankariya Talab, Ahemdabad</p>
+                            <p className="text-sm -mt-1 text-gray-600">{destination}</p>
                         </div></div>
                     <div className="flex items-center  gap-5 p-3"> <i className="text-lg ri-currency-line"></i>
                         <div className="flex flex-col">
-                            <h3 className="text-lg font-medium">₹193.90</h3>
+                            <h3 className="text-lg font-medium">{fare?.fare?.[vehicleType]}</h3>
                             <p className="text-sm -mt-1 text-gray-600">Cash</p>
                         </div></div>
                 </div>
-                <button onClick={()=>{setVehicleFound(true)}} className="w-full mt-5 text-black p-2 rounded-lg bg-green-300 font-semibold">
+                <button onClick={()=>{setVehicleFound(true)
+                    setConfirmRidePanel(false)
+                    createRide()
+                }
+            
+            } className="w-full mt-5 text-black p-2 rounded-lg bg-green-300 font-semibold">
                     Confirm
                 </button>
             </div>

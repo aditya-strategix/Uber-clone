@@ -1,5 +1,5 @@
 
-const LookingForDriver = ({setVehicleFound}) => {
+const LookingForDriver = ({setVehicleFound,pickup,destination,fare,vehicleType}) => {
   return (
     <div>
     <h5 className="p-1 text-center w-[93%] absolute top-0" onClick={() => setVehicleFound(false)}>
@@ -13,17 +13,17 @@ const LookingForDriver = ({setVehicleFound}) => {
                 <i className="text-lg ri-map-pin-fill"></i>
                 <div className="flex flex-col">
                     <h3 className="text-lg font-medium">562/11-A</h3>
-                    <p className="text-sm -mt-1 text-gray-600">Kankariya Talab, Ahemdabad</p>
+                    <p className="text-sm -mt-1 text-gray-600">{pickup}</p>
                 </div>
             </div>
             <div className="flex items-center border-b-2 gap-5 p-3"> <i className="text-lg ri-map-pin-add-fill"></i>
                 <div className="flex flex-col">
                     <h3 className="text-lg font-medium">562/11-A</h3>
-                    <p className="text-sm -mt-1 text-gray-600">Kankariya Talab, Ahemdabad</p>
+                    <p className="text-sm -mt-1 text-gray-600">{destination}</p>
                 </div></div>
             <div className="flex items-center  gap-5 p-3"> <i className="text-lg ri-currency-line"></i>
                 <div className="flex flex-col">
-                    <h3 className="text-lg font-medium">₹193.90</h3>
+                    <h3 className="text-lg font-medium">{fare?.fare?.[vehicleType]}</h3>
                     <p className="text-sm -mt-1 text-gray-600">Cash</p>
                 </div></div>
         </div>

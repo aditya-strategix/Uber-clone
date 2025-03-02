@@ -74,7 +74,6 @@
     - `email` (string, required): Captain's email.
     - `password` (string, required): Captain's password.
 - **Response:**
-
     - `status` (string): Status of the request.
     - `message` (string): Success or error message.
     - `token` (string): Authentication token.
@@ -98,4 +97,72 @@
 - **Response:**
     - `status` (string): Status of the request.
     - `message` (string): Success or error message.
-    
+
+## Map Routes
+
+### Get Coordinates
+- **Endpoint:** `maps/get-coordinates`
+- **Method:** GET
+- **Description:** Retrieves the coordinates for a given address.
+- **Query Parameters:**
+    - `address` (string, required): The address to get coordinates for.
+- **Headers:**
+    - `Authorization` (string, required): Bearer token.
+- **Response:**
+    - `status` (string): Status of the request.
+    - `data` (object): Coordinates of the address.
+
+### Get Distance and Time
+- **Endpoint:** `maps/get-distance-time`
+- **Method:** GET
+- **Description:** Retrieves the distance and time between two locations.
+- **Query Parameters:**
+    - `origin` (string, required): The starting location.
+    - `destination` (string, required): The ending location.
+- **Headers:**
+    - `Authorization` (string, required): Bearer token.
+- **Response:**
+    - `status` (string): Status of the request.
+    - `data` (object): Distance and time between the locations.
+
+### Get AutoComplete Suggestions
+- **Endpoint:** `maps/get-suggestions`
+- **Method:** GET
+- **Description:** Retrieves autocomplete suggestions for a given input.
+- **Query Parameters:**
+    - `input` (string, required): The input to get suggestions for.
+- **Headers:**
+    - `Authorization` (string, required): Bearer token.
+- **Response:**
+    - `status` (string): Status of the request.
+    - `data` (object): Autocomplete suggestions.
+
+## Ride Routes
+
+### Create Ride
+- **Endpoint:** `rides/create`
+- **Method:** POST
+- **Description:** Creates a new ride.
+- **Request Body:**
+    - `pickup` (string, required): Pickup location.
+    - `destination` (string, required): Destination location.
+    - `vehicleType` (string, required): Type of vehicle (car, bike, auto).
+- **Headers:**
+    - `Authorization` (string, required): Bearer token.
+- **Response:**
+    - `status` (string): Status of the request.
+    - `message` (string): Success or error message.
+    - `data` (object): Ride details.
+
+### Get Fare
+- **Endpoint:** `rides/getfare`
+- **Method:** GET
+- **Description:** Retrieves the fare for a ride.
+- **Query Parameters:**
+    - `pickup` (string, required): Pickup location.
+    - `destination` (string, required): Destination location.
+- **Headers:**
+    - `Authorization` (string, required): Bearer token.
+- **Response:**
+    - `status` (string): Status of the request.
+    - `data` (object): Fare details.

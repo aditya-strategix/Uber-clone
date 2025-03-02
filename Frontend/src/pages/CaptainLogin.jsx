@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { useContext } from 'react';
-import { CaptainDataContext } from '../context/captainContext';
+import { CaptainDataContext } from '../context/CaptainContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 const CaptainLogin = () => {
@@ -13,9 +13,10 @@ const CaptainLogin = () => {
         e.preventDefault();
         const captainData={email:email,password:password};
         const response=await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/login`,captainData);
-        const data=response.data;
-        const token=data.token;
+      
         if(response.status===200){
+            const data=response.data;
+            const token=data.token;
             setCaptain(data.captain);
             localStorage.setItem('token',token);
             navigate('/captain-home');
@@ -30,7 +31,7 @@ const CaptainLogin = () => {
                 <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmoJcsV2aZSkAm3nmwtyjuiekrT3H5U7pvjQ&s' alt='Uber Logo' className='w-20 mb-10 pb-5'/>
             <form onSubmit={submitHandler}>
                 <h3 className='text-xl font-medium mb-2'> What&apos;s your email</h3>
-                <input type={email} required value={email} onChange={(e)=>setEmail(e.target.value)}
+                <input type="email" required value={email} onChange={(e)=>setEmail(e.target.value)}
                 className='w-full p-2 mb-6 border border-gray-400 bg-[#eeeeee] rounded-lg'
                  placeholder="Your Email Address" />
                 <h3 className='text-xl mb-2'>Enter your password</h3>

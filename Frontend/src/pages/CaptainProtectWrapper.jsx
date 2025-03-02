@@ -1,33 +1,57 @@
-
-import { jwtDecode } from 'jwt-decode';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react'
+import { CaptainDataContext } from '../context/CaptainContext'
 import { useNavigate } from 'react-router-dom'
-const CaptainProtectWrapper = ({children}) => {
-    const [isLoading,setIsLoading]=useState(true);
-   const token=localStorage.getItem('token');
-    const navigate=useNavigate();
+import axios from 'axios'
 
- useEffect(()=>{
-        if(!token){
+const CaptainProtectWrapper = ({
+    children
+}) => {
+
+    const token = localStorage.getItem('token')
+    const navigate = useNavigate()
+    const { captain, setCaptain } = useContext(CaptainDataContext)
+    const [ isLoading, setIsLoading ] = useState(true)
+
+
+
+
+    useEffect(() => {
+        console.log(token);
+        if (!token) {
             navigate('/captain-login');
-        } else{
-            const decoded=jwtDecode(token);
-            if(decoded.role!=='captain'){
-              localStorage.removeItem('token');
-navigate('/captain-login');
-            }
         }
-        setIsLoading(false);
- },[navigate, token])
-    if(isLoading){
-        return <h1>Loading...</h1>
+        axios.get(`${import.meta.env.VITE_BASE_URL}/captains/profile`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then(response => {
+            if (response.status === 200) {
+                setCaptain(response.data)
+                setIsLoading(false)
+            }
+        })
+            .catch(err => {
+console.log(err);
+                localStorage.removeItem('token')
+                navigate('/captain-login')
+            })
+    }, [ token ])
+
+    
+
+    if (isLoading) {
+        return (
+            <div>Loading...</div>
+        )
     }
-  return (
-    <>
-    {children}
-    </>
-  )
+
+
+
+    return (
+        <>
+            {children}
+        </>
+    )
 }
 
 export default CaptainProtectWrapper

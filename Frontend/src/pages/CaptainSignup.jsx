@@ -1,4 +1,4 @@
-import { Link,Navigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useContext, useState } from 'react'
 import { CaptainDataContext } from '../context/captainContext';
 import axios from 'axios';
@@ -15,14 +15,14 @@ const CaptainSignup = () => {
 
 
 const {captain,setCaptain}=useContext(CaptainDataContext);
-
+const navigate=useNavigate();
     const submitHandler=async(e)=>{
         e.preventDefault();
        const CaptainData={
         fullname:{
             firstName:firstName,
             lastName:lastName
-        }, 
+        },
         email:email,
         password:password,
         vehicle:{
@@ -38,7 +38,7 @@ const {captain,setCaptain}=useContext(CaptainDataContext);
         const data=response.data;
         setCaptain(data.captain);
         localStorage.setItem('token',data.token);
-        Navigate('/captain-home');
+        navigate('/captain-home');
        }
        console.log(response);
         setEmail('');   
