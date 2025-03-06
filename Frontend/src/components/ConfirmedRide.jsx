@@ -1,8 +1,6 @@
 
 const ConfirmedRide = ({ setVehicleFound,setConfirmRidePanel,createRide,pickup,destination,fare,vehicleType}) => {
-    console.log("Fare Object:", fare);
-    console.log("Vehicle Type:", vehicleType);
-    console.log(fare?.fare?.[vehicleType]);
+
         return (
         <div>
             <h5 className="p-1 text-center w-[93%] absolute top-0" onClick={() => setConfirmRidePanel(false)}>

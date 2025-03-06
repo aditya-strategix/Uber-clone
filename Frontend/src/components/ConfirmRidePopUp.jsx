@@ -1,10 +1,35 @@
 import { useState } from "react"
+import axios from "axios"
 import CaptainRiding from "../pages/CaptainRiding"
 import { Link } from "react-router-dom"
-const ConfirmRidePopUp = ({setConfirmRidePopUpPanel,setRidePopUpPanel,fare,vehicleType,pickup,destination}) => {
+import { useNavigate } from "react-router-dom"
+const ConfirmRidePopUp = ({setConfirmRidePopUpPanel,setRidePopUpPanel,ride}) => {
+    const navigate=useNavigate();
     const[otp,setOtp]=useState('')
-    const submitHandler=(e)=>{
+    const submitHandler=async(e)=>{
         e.preventDefault();
+        if(!ride?._id||!ride){
+            console.error("RIde Id is missing");
+            return;
+        }
+
+        const response=await axios.get(`${import.meta.env.VITE_BASE_URL}/rides/start-ride`,{
+          params:{  rideId:ride._id,
+            otp:otp
+          }
+          ,
+            headers:{
+                Authorization:`Bearer ${localStorage.getItem('token')}`
+            }
+        
+        });
+        if(response.status==200){
+            setConfirmRidePopUpPanel(false);
+            setRidePopUpPanel(false);
+            navigate('/captain-riding',{
+                state:{ride:ride}
+            });
+        }
     }
   return (
     <div>
@@ -15,7 +40,7 @@ const ConfirmRidePopUp = ({setConfirmRidePopUpPanel,setRidePopUpPanel,fare,vehic
         <div className="flex items-center justify-between rounded-lg mt-4 bg-orange-300">
             <div className="flex items-center gap-3 p-3">
                 <img className="w-20 h-20 rounded-full object-cover" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNPTZdVhettUOgL4gulcQCozdbr2gvz4nOcQ&s" alt="" />
-               <h2 className="text-2xl font-medium">Anamika</h2>
+               <h2 className="text-2xl font-medium capitalize">{ride?.user.fullname.firstName}</h2>
             </div>
             <h5 className="pr-2 text-xl font-semibold">2.2 km</h5>
             </div>
@@ -25,28 +50,28 @@ const ConfirmRidePopUp = ({setConfirmRidePopUpPanel,setRidePopUpPanel,fare,vehic
                     <i className="text-lg ri-map-pin-fill"></i>
                     <div className="flex flex-col">
                         <h3 className="text-lg font-medium">562/11-A</h3>
-                        <p className="text-sm -mt-1 text-gray-600">{pickup}</p>
+                        <p className="text-sm -mt-1 text-gray-600">{ride?.pickup}</p>
                     </div>
                 </div>
                 <div className="flex items-center border-b-2 gap-5 p-3"> <i className="text-lg ri-map-pin-add-fill"></i>
                     <div className="flex flex-col">
                         <h3 className="text-lg font-medium">562/11-A</h3>
-                        <p className="text-sm -mt-1 text-gray-600">{destination}</p>
+                        <p className="text-sm -mt-1 text-gray-600">{ride?.destination}</p>
                     </div></div>
                 <div className="flex items-center  gap-5 p-3"> <i className="text-lg ri-currency-line"></i>
                     <div className="flex flex-col">
-                        <h3 className="text-lg font-medium">₹193.90</h3>
+                        <h3 className="text-lg font-medium">{ride?.fare}</h3>
                         <p className="text-sm -mt-1 text-gray-600">Cash</p>
                     </div></div>
             </div>
            <div className="mt-6 w-full">
-           <form onSubmit={(e)=>{
-            submitHandler(e)
-           }}>
+           <form onSubmit={submitHandler}>
             <input value={otp} onChange={(e)=>setOtp(e.target.value)} className="w-full font-mono bg-[#eee] px-8 py-2 text-lg rounded-lg" type="text" placeholder="Enter OTP"></input>
-           <Link to="/captain-riding" className="w-full flex justify-center items-center mt-5 text-black p-2 rounded-lg bg-green-300 font-semibold">
+           <button 
+          
+           className="w-full flex justify-center items-center mt-5 text-black p-2 rounded-lg bg-green-300 font-semibold">
                 Confirm
-            </Link>
+            </button>
             <button onClick={() => {setConfirmRidePopUpPanel(false)
                 setRidePopUpPanel(false)}
             } className="w-full mt-3 text-white p-2 rounded-lg bg-red-400 font-semibold">

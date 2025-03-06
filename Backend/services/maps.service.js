@@ -42,12 +42,13 @@ module.exports.getAutoCompleteSuggestions=async(input)=>{
    }
 //    console.log(input)
    const apiKey2=process.env.GOMAPS_API;
+   console.log(apiKey2)
 //    console.log(apiKey2);
    const url=`https://maps.gomaps.pro/maps/api/place/autocomplete/json?input=${input}&key=${apiKey2}`
   try {
     // console.log(url);
      const response=await axios.get(url);
-    //  console.log(response.data)
+     console.log(response.data)
      if(response.data.status==='OK'){
         return response.data.predictions
      }else{

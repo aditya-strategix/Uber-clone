@@ -5,9 +5,9 @@ import axios from 'axios';
 import 'remixicon/fonts/remixicon.css'
 import LocationSearchPanel from '../components/LocationSearchPanel';
 import VehiclePanel from '../components/VehiclePanel';
-import ConfirmRide from '../components/ConfirmedRide';
+import ConfirmedRide from '../components/ConfirmedRide';
 import LookingForDriver from '../components/LookingForDriver';
-import WaitingForDriver from '../components/WaitForDriver';
+import WaitForDriver from '../components/WaitForDriver';
 import { SocketContext } from '../context/SocketContext';
 import { UserDataContext } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
@@ -32,6 +32,7 @@ const Home = () => {
     const [ vehicleType, setVehicleType ] = useState(null)
     const [ ride, setRide ] = useState(null)
 
+    const navigate=useNavigate();
 const {socket}=useContext(SocketContext);
 const{user}=useContext(UserDataContext);
 useEffect(()=>{
@@ -41,11 +42,16 @@ useEffect(()=>{
 },[user])
 
 socket.on('ride-confirmed',ride=>{
-    setVehicleFound(false);
+    console.log("Received ride:", ride); 
+        setVehicleFound(false);
     setWaitingForDriver(true);
+    setRide(ride)
 })
  
-
+socket.on('ride-started',ride=>{
+    setWaitingForDriver(false);
+navigate('/riding',{state:{ride}});
+})
     const handlePickupChange = async (e) => {
         setPickup(e.target.value)
         try {
@@ -54,11 +60,13 @@ socket.on('ride-confirmed',ride=>{
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
-
+                
             })
+            console.log(pickup);
+            console.log(response);
             setPickupSuggestions(response.data)
-        } catch {
-            // handle error
+        } catch(error) {
+           console.log(error.message)
         }
     }
 
@@ -72,8 +80,8 @@ socket.on('ride-confirmed',ride=>{
                 }
             })
             setDestinationSuggestions(response.data)
-        } catch {
-            // handle error
+        } catch(error) {
+           console.log(error.message);
         }
     }
 
@@ -245,14 +253,12 @@ socket.on('ride-confirmed',ride=>{
                     fare={fare} setConfirmRidePanel={setConfirmRidePanel} setVehiclePanel={setVehiclePanel} />
             </div>
             <div ref={confirmRidePanelRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12'>
-                <ConfirmRide
+                <ConfirmedRide
                     createRide={createRide}
                     pickup={pickup}
                     destination={destination}
                     fare={fare}
                     vehicleType={vehicleType}
-                    
-
                     setConfirmRidePanel={setConfirmRidePanel} setVehicleFound={setVehicleFound} />
             </div>
             <div ref={vehicleFoundRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12'>
@@ -265,7 +271,7 @@ socket.on('ride-confirmed',ride=>{
                     setVehicleFound={setVehicleFound} />
             </div>
             <div ref={waitingForDriverRef} className='fixed w-full  z-10 bottom-0  bg-white px-3 py-6 pt-12'>
-                <WaitingForDriver
+                <WaitForDriver
                     ride={ride}
                     setVehicleFound={setVehicleFound}
                     setWaitingForDriver={setWaitingForDriver}
