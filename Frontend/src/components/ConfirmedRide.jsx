@@ -1,5 +1,7 @@
 
 const ConfirmedRide = ({ setVehicleFound,setConfirmRidePanel,createRide,pickup,destination,fare,vehicleType}) => {
+    console.log("ConfirmedRide component rendered");
+console.log(createRide);
 
         return (
         <div>
@@ -28,7 +30,9 @@ const ConfirmedRide = ({ setVehicleFound,setConfirmRidePanel,createRide,pickup,d
                             <p className="text-sm -mt-1 text-gray-600">Cash</p>
                         </div></div>
                 </div>
-                <button onClick={()=>{setVehicleFound(true)
+                <button onClick={()=>{
+                    console.log("Confirm clicked");
+                    setVehicleFound(true)
                     setConfirmRidePanel(false)
                     createRide()
                 }

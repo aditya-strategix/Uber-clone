@@ -181,8 +181,7 @@ navigate('/riding',{state:{ride}});
 
 
     }
-
-    async function createRide() {
+ async function createRide() {
         const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/create`, {
             pickup,
             destination,
@@ -195,7 +194,6 @@ navigate('/riding',{state:{ride}});
 
 
     }
-
     return (
         <div className='h-screen relative overflow-hidden'>
             <img className='w-16 absolute left-5 top-5' src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png" alt="" />
