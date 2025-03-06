@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useContext, useState } from 'react'
-import { CaptainDataContext } from '../context/captainContext';
+import { CaptainDataContext } from '../context/CaptainContext';
 import axios from 'axios';
 const CaptainSignup = () => {
     // const navigate=useNavigate();
