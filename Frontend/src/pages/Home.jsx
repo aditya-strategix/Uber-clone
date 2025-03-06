@@ -88,78 +88,84 @@ navigate('/riding',{state:{ride}});
     const submitHandler = (e) => {
         e.preventDefault()
     }
-
-    useGSAP(function () {
+    useGSAP(() => {
         if (panelOpen) {
             gsap.to(panelRef.current, {
                 height: '70%',
-                padding: 24
-                // opacity:1
-            })
+                padding: 24,
+                opacity: 1 // Added opacity transition
+            });
             gsap.to(panelCloseRef.current, {
                 opacity: 1
-            })
+            });
         } else {
             gsap.to(panelRef.current, {
                 height: '0%',
-                padding: 0
-                // opacity:0
-            })
+                padding: 0,
+                opacity: 0 // Fade out when closing
+            });
             gsap.to(panelCloseRef.current, {
                 opacity: 0
-            })
+            });
         }
-    }, [ panelOpen ])
-
-
-    useGSAP(function () {
+    }, [panelOpen]);
+    
+    useGSAP(() => {
         if (vehiclePanel) {
             gsap.to(vehiclePanelRef.current, {
-                transform: 'translateY(0)'
-            })
+                transform: 'translateY(0)',
+                opacity: 1 // Fade in
+            });
         } else {
             gsap.to(vehiclePanelRef.current, {
-                transform: 'translateY(100%)'
-            })
+                transform: 'translateY(100%)',
+                opacity: 0 // Fade out
+            });
         }
-    }, [ vehiclePanel ])
-
-    useGSAP(function () {
+    }, [vehiclePanel]);
+    
+    useGSAP(() => {
         if (confirmRidePanel) {
             gsap.to(confirmRidePanelRef.current, {
-                transform: 'translateY(0)'
-            })
+                transform: 'translateY(0)',
+                opacity: 1
+            });
         } else {
             gsap.to(confirmRidePanelRef.current, {
-                transform: 'translateY(100%)'
-            })
+                transform: 'translateY(100%)',
+                opacity: 0
+            });
         }
-    }, [ confirmRidePanel ])
-
-    useGSAP(function () {
+    }, [confirmRidePanel]);
+    
+    useGSAP(() => {
         if (vehicleFound) {
             gsap.to(vehicleFoundRef.current, {
-                transform: 'translateY(0)'
-            })
+                transform: 'translateY(0)',
+                opacity: 1
+            });
         } else {
             gsap.to(vehicleFoundRef.current, {
-                transform: 'translateY(100%)'
-            })
+                transform: 'translateY(100%)',
+                opacity: 0
+            });
         }
-    }, [ vehicleFound ])
-
-    useGSAP(function () {
+    }, [vehicleFound]);
+    
+    useGSAP(() => {
         if (waitingForDriver) {
             gsap.to(waitingForDriverRef.current, {
-                transform: 'translateY(0)'
-            })
+                transform: 'translateY(0)',
+                opacity: 1
+            });
         } else {
             gsap.to(waitingForDriverRef.current, {
-                transform: 'translateY(100%)'
-            })
+                transform: 'translateY(100%)',
+                opacity: 0
+            });
         }
-    }, [ waitingForDriver ])
-
+    }, [waitingForDriver]);
+    
 
     async function findTrip() {
         setVehiclePanel(true)
