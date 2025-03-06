@@ -166,3 +166,40 @@
 - **Response:**
     - `status` (string): Status of the request.
     - `data` (object): Fare details.
+
+### Confirm Ride
+- **Endpoint:** `rides/confirm`
+- **Method:** POST
+- **Description:** Confirms a ride by the captain.
+- **Request Body:**
+    - `rideId` (string, required): Ride ID.
+- **Headers:**
+    - `Authorization` (string, required): Bearer token.
+- **Response:**
+    - `status` (string): Status of the request.
+    - `message` (string): Success or error message.
+
+### Start Ride
+- **Endpoint:** `rides/start-ride`
+- **Method:** GET
+- **Description:** Starts a ride by the captain.
+- **Query Parameters:**
+    - `rideId` (string, required): Ride ID.
+    - `otp` (string, required): OTP for ride verification.
+- **Headers:**
+    - `Authorization` (string, required): Bearer token.
+- **Response:**
+    - `status` (string): Status of the request.
+    - `message` (string): Success or error message.
+
+### End Ride
+- **Endpoint:** `rides/end-ride`
+- **Method:** POST
+- **Description:** Ends a ride by the captain.
+- **Request Body:**
+    - `rideId` (string, required): Ride ID.
+- **Headers:**
+    - `Authorization` (string, required): Bearer token.
+- **Response:**
+    - `status` (string): Status of the request.
+    - `message` (string): Success or error message.
